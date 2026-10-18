@@ -16,25 +16,38 @@ npm run preview    # serve the production build
 | Route           | File                        |
 | --------------- | --------------------------- |
 | `/`             | `src/pages/Home.tsx`        |
+| `/platform`     | `src/pages/Platform.tsx`    |
 | `/solutions`    | `src/pages/Solutions.tsx`   |
 | `/how-it-works` | `src/pages/HowItWorks.tsx`  |
 | `/about`        | `src/pages/About.tsx`       |
 | `/contact`      | `src/pages/Contact.tsx`     |
 | `/privacy`      | `src/pages/Privacy.tsx`     |
 
+## Design system
+
+Tokens (color, type scale, spacing, radii, shadows, motion) live in `src/styles/tokens.css` and are the
+primary source of design values. Styles are layered: `tokens` → `base` (type, layout primitives) →
+`components` (buttons, nav, forms) → `mockups` (product UI) → `sections` (homepage) → `pages`.
+
+- Light "paper" surfaces with dark "night" sections for contrast; Forge ember (`--ember`) is used sparingly.
+- Type: Geist + Geist Mono. Radii stay between 4px and 14px.
+- Motion: reveals on scroll once; ambient loops only inside product illustrations, paused off-screen,
+  and disabled under `prefers-reduced-motion`.
+
 ## Editing content
 
-- **Contact details, booking link, form endpoint:** `src/config/site.ts` and `.env` (see `.env.example`).
-- **The six solutions** (homepage cards and the Solutions page): `src/data/solutions.ts`.
-- **Animated workflows** (hero and interactive demo): `src/data/flows.ts`.
-- **Process steps and engagement phases:** `src/data/process.ts`.
-- **Design tokens** (colors, type, spacing): top of `src/styles/global.css`.
+- **Contact details, booking link, form endpoint, site URL:** `src/config/site.ts` and `.env` (see `.env.example`).
+- **Solutions** (homepage showcase, Solutions page, footer): `src/data/solutions.ts`.
+- **Animated workflows** (hero command center and Platform demo): `src/data/flows.ts`.
+- **Process stages and engagement phases:** `src/data/process.ts`.
+- **Product illustrations:** `src/components/mockups/`. All are illustrative and labeled as such;
+  sample figures are marked "Sample data".
 
 ## Contact form
 
 - If `VITE_CONTACT_ENDPOINT` is set, the form POSTs JSON to it (works with Formspree, Basin, or your own API).
 - If it is not set, submitting opens the visitor's email client with the message pre-filled, addressed to `site.email`.
-- If `VITE_BOOKING_URL` is set (e.g. Calendly or Cal.com), every "Book a Discovery Call" button links to it. Otherwise those buttons go to `/contact?intent=discovery-call`.
+- If `VITE_BOOKING_URL` is set (e.g. Calendly or Cal.com), every "Book a Consultation" button links to it. Otherwise those buttons go to `/contact?intent=consultation`.
 
 ## Deploy
 

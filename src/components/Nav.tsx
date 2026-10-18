@@ -4,17 +4,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import Button from "./Button";
-import { discoveryCallHref, navLinks } from "../config/site";
+import { consultationHref, navLinks } from "../config/site";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -29,17 +30,24 @@ export default function Nav() {
 
   return (
     <header className={`nav ${scrolled || open ? "scrolled" : ""}`}>
-      <div className="container nav-inner">
+      <div className="container wide nav-inner">
         <Logo />
-        <nav className="nav-links" aria-label="Primary">
-          {navLinks.map((l) => (
-            <NavLink key={l.to} to={l.to} className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-              {l.label}
-            </NavLink>
-          ))}
+        <nav className="nav-links" aria-label="Primary" onMouseLeave={() => setHovered(null)}>
+          {navLinks.map((l) => {
+            const active = pathname.startsWith(l.to);
+            return (
+              <NavLink key={l.to} to={l.to} className={`nav-link ${active ? "active" : ""}`} onMouseEnter={() => setHovered(l.to)}>
+                {hovered === l.to && (
+                  <motion.span layoutId="nav-hover" className="nav-hover" transition={{ type: "spring", bounce: 0.15, duration: 0.4 }} />
+                )}
+                <span className="nav-link-text">{l.label}</span>
+                {active && <motion.span layoutId="nav-active" className="nav-active" transition={{ type: "spring", bounce: 0.15, duration: 0.5 }} />}
+              </NavLink>
+            );
+          })}
         </nav>
         <div className="nav-cta">
-          <Button to={discoveryCallHref} className="btn-sm">Book a Discovery Call</Button>
+          <Button to={consultationHref} size="sm">Book a Consultation</Button>
         </div>
         <button
           className="nav-toggle"
@@ -48,7 +56,7 @@ export default function Nav() {
           aria-controls="mobile-menu"
           onClick={() => setOpen((o) => !o)}
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -57,19 +65,19 @@ export default function Nav() {
           <motion.div
             id="mobile-menu"
             className="mobile-menu"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
             <nav aria-label="Mobile">
               {navLinks.map((l, i) => (
-                <motion.div key={l.to} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i }}>
+                <motion.div key={l.to} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 * i, duration: 0.3 }}>
                   <NavLink to={l.to} className={({ isActive }) => `mobile-link ${isActive ? "active" : ""}`}>{l.label}</NavLink>
                 </motion.div>
               ))}
             </nav>
-            <Button to={discoveryCallHref} arrow className="btn-block">Book a Discovery Call</Button>
+            <Button to={consultationHref} arrow className="btn-block">Book a Consultation</Button>
           </motion.div>
         )}
       </AnimatePresence>

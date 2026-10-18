@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jcai27.github.io/forge-ai-website/sitemap.xml

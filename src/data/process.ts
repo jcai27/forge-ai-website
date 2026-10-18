@@ -2,10 +2,30 @@ import type { LucideIcon } from "lucide-react";
 import { Compass, Target, Search, ClipboardList, Code2, Rocket, Activity } from "lucide-react";
 
 export const processSteps = [
-  { num: "01", title: "Discover", body: "We learn how your business operates and identify where manual work is costing you time." },
-  { num: "02", title: "Design", body: "We map the workflow and recommend the right automation architecture." },
-  { num: "03", title: "Build", body: "We implement and integrate the solution with your existing systems." },
-  { num: "04", title: "Improve", body: "We monitor performance, refine workflows, and help your automations evolve." },
+  {
+    num: "01",
+    title: "Discover",
+    body: "Understand existing systems, bottlenecks, and workflows — starting with the people who do the work.",
+    outputs: ["Workflow map", "Prioritized opportunities"],
+  },
+  {
+    num: "02",
+    title: "Design",
+    body: "Architect automation tailored to your business, with agreed scope and measurable success criteria.",
+    outputs: ["Solution architecture", "Scope & success criteria"],
+  },
+  {
+    num: "03",
+    title: "Deploy",
+    body: "Integrate systems, test against real data, and launch production workflows alongside your team.",
+    outputs: ["Production workflows", "Team training"],
+  },
+  {
+    num: "04",
+    title: "Improve",
+    body: "Monitor outcomes against the agreed criteria and continuously refine how operations run.",
+    outputs: ["Monitoring & alerts", "Regular reviews"],
+  },
 ];
 
 export interface Phase {
@@ -52,7 +72,7 @@ export const phases: Phase[] = [
   },
   {
     icon: Code2,
-    stage: "Build",
+    stage: "Deploy",
     title: "Development & testing",
     body: "We build incrementally and test against real examples from your business — including the messy ones. You see progress early and often, and give feedback before anything goes live.",
     activities: ["Iterative builds with regular check-ins", "Testing with real historical data and edge cases", "Approval steps, logging, and error handling built in"],
@@ -60,7 +80,7 @@ export const phases: Phase[] = [
   },
   {
     icon: Rocket,
-    stage: "Build",
+    stage: "Deploy",
     title: "Deployment & training",
     body: "We roll out carefully — often alongside the existing process at first — and make sure your team understands what the system does, how to review its work, and what to do when something looks off.",
     activities: ["Staged rollout with a fallback plan", "Team walkthroughs and plain-language documentation", "Clear ownership and escalation paths"],

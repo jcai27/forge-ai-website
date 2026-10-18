@@ -1,43 +1,46 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import { navLinks, site } from "../config/site";
+import SmartLink from "./SmartLink";
+import { consultationHref, navLinks, site } from "../config/site";
 import { solutions } from "../data/solutions";
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
+    <footer className="footer night">
+      <div className="container wide">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Logo />
-            <p className="footer-tagline">{site.tagline}</p>
-            <p className="muted small">{site.positioning}</p>
+            <Logo inverse />
+            <p className="footer-tagline">{site.positioning}</p>
+            <a className="footer-email" href={`mailto:${site.email}`}>{site.email}</a>
           </div>
-          <div>
-            <h3 className="footer-h">Company</h3>
+          <nav aria-label="Company">
+            <h2 className="footer-h">Company</h2>
             <ul className="footer-list">
-              <li><Link to="/">Home</Link></li>
               {navLinks.map((l) => <li key={l.to}><Link to={l.to}>{l.label}</Link></li>)}
             </ul>
-          </div>
-          <div>
-            <h3 className="footer-h">Solutions</h3>
+          </nav>
+          <nav aria-label="Solutions">
+            <h2 className="footer-h">Solutions</h2>
             <ul className="footer-list">
               {solutions.map((s) => <li key={s.id}><Link to={`/solutions#${s.id}`}>{s.title}</Link></li>)}
             </ul>
-          </div>
-          <div>
-            <h3 className="footer-h">Contact</h3>
+          </nav>
+          <nav aria-label="Get started">
+            <h2 className="footer-h">Get started</h2>
             <ul className="footer-list">
-              <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-              <li><Link to="/contact">Start a conversation</Link></li>
-              <li><Link to="/contact?intent=discovery-call">Book a discovery call</Link></li>
+              <li><SmartLink to={consultationHref}>Book a consultation</SmartLink></li>
+              <li><Link to="/contact">Describe a workflow</Link></li>
+              <li><Link to="/how-it-works">Engagement process</Link></li>
             </ul>
-          </div>
+          </nav>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Forge AI. All rights reserved.</span>
-          <Link to="/privacy">Privacy</Link>
+          <div className="footer-legal">
+            <Link to="/privacy">Privacy</Link>
+            <span className="footer-tag">{site.tagline}</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -4,6 +4,7 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import ScrollManager from "./components/ScrollManager";
 import Home from "./pages/Home";
+import Platform from "./pages/Platform";
 import Solutions from "./pages/Solutions";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
@@ -21,6 +22,7 @@ export default function App() {
       <main id="main" key={location.pathname} className="page-enter">
         <Routes location={location}>
           <Route path="/" element={<Home />} />
+          <Route path="/platform" element={<Platform />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/about" element={<About />} />

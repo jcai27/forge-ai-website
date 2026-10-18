@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Forge AI design system — tokens
+   One source of truth for color, type, space, shape, depth, and motion.
+   Breakpoints (used in media queries): sm 640 · md 900 · lg 1100 · xl 1320
+   ========================================================================== */
+:root {
+  /* Surfaces — light (default) */
+  --paper: #fbfbfa;          /* page background */
+  --surface: #ffffff;        /* raised surfaces, product UI */
+  --sunken: #f4f4f1;         /* wells, inputs, alternate sections */
+  --sunken-2: #ecebe7;
+  --line: #e7e5e0;           /* hairlines */
+  --line-strong: #d6d3cc;    /* control borders */
+
+  /* Ink */
+  --ink: #0e0f12;            /* headings, primary text */
+  --ink-2: #3b3e46;          /* body */
+  --ink-3: #5f636c;          /* secondary text (5.8:1 on paper) */
+  --ink-4: #8c9099;          /* decorative / disabled only */
+
+  /* Brand — Forge ember. Used sparingly: live state, emphasis, the mark. */
+  --ember: #e8590c;
+  --ember-ink: #b53e06;      /* ember as text (5.4:1 on white) */
+  --ember-soft: #fff2ea;
+  --ember-line: #f6c4a3;
+
+  /* Data & status (each ships with an icon or label, never color alone) */
+  --blue: #2f5fd0;    --blue-soft: #eef3fd;   --blue-line: #c9d7f6;
+  --green: #17803d;   --green-soft: #eaf6ee;  --green-line: #bfe3cb;
+  --amber: #a35800;   --amber-soft: #fdf4e3;  --amber-line: #f1d7a8;
+  --red: #c0352b;     --red-soft: #fdeeec;
+
+  /* Surfaces — night (contrast sections) */
+  --night: #0a0b0d;
+  --night-2: #111317;
+  --night-3: #181b21;
+  --night-line: rgba(255, 255, 255, 0.08);
+  --night-line-2: rgba(255, 255, 255, 0.14);
+  --night-ink: #f2f3f5;
+  --night-ink-2: #b9bdc7;
+  --night-ink-3: #8a8f9b;
+
+  /* Type */
+  --font-sans: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --fs-display: clamp(2.6rem, 6vw, 5rem);
+  --fs-h1: clamp(2.4rem, 4.8vw, 3.9rem);
+  --fs-h2: clamp(2rem, 3.5vw, 2.9rem);
+  --fs-h3: clamp(1.35rem, 2vw, 1.6rem);
+  --fs-h4: 1.125rem;
+  --fs-lead: clamp(1.075rem, 1.35vw, 1.2rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.8125rem;
+  --fs-micro: 0.6875rem;
+  --track-display: -0.045em;
+  --track-heading: -0.032em;
+  --track-tight: -0.015em;
+  --track-label: 0.08em;
+
+  /* Space — 4px base */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px;
+  --section-y: clamp(88px, 11vw, 160px);
+
+  /* Layout */
+  --container: 1200px;
+  --container-wide: 1320px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --nav-h: 64px;
+
+  /* Shape */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+
+  /* Depth */
+  --shadow-1: 0 1px 2px rgba(14, 15, 18, 0.05);
+  --shadow-2: 0 1px 2px rgba(14, 15, 18, 0.04), 0 8px 20px -10px rgba(14, 15, 18, 0.12);
+  --shadow-3: 0 0 0 1px rgba(14, 15, 18, 0.04), 0 2px 4px rgba(14, 15, 18, 0.04), 0 24px 48px -24px rgba(14, 15, 18, 0.2);
+  --shadow-product: 0 0 0 1px rgba(14, 15, 18, 0.07), 0 2px 6px rgba(14, 15, 18, 0.04),
+    0 30px 60px -30px rgba(14, 15, 18, 0.28), 0 80px 140px -80px rgba(232, 89, 12, 0.22);
+
+  /* Motion — quick for feedback, slower for reveals, ambient loops only inside product UI */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 150ms;
+  --dur-2: 250ms;
+  --dur-3: 600ms;
+
+  color-scheme: light;
+}

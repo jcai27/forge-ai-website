@@ -1,25 +1,19 @@
 import { Link } from "react-router-dom";
 
-export function LogoMark({ size = 28 }: { size?: number }) {
+export function LogoMark({ size = 24, inverse = false }: { size?: number; inverse?: boolean }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <defs>
-        <linearGradient id="forge-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FFB066" />
-          <stop offset="1" stopColor="#FF5A1F" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="8" fill="#17171A" stroke="rgba(255,255,255,0.1)" />
-      <path d="M9 8h14v4H13v3h8v4h-8v5H9z" fill="url(#forge-g)" />
-      <circle cx="23" cy="22" r="2.2" fill="#FFB066" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <rect width="24" height="24" rx="5" fill={inverse ? "#f2f3f5" : "#0e0f12"} />
+      <path d="M7 6h10v3H10v2.2h6v3h-6V18H7z" fill={inverse ? "#0e0f12" : "#ffffff"} />
+      <rect x="14.6" y="15.6" width="2.4" height="2.4" rx="0.6" fill="#e8590c" />
     </svg>
   );
 }
 
-export default function Logo() {
+export default function Logo({ inverse = false }: { inverse?: boolean }) {
   return (
-    <Link to="/" className="logo" aria-label="Forge AI home">
-      <LogoMark />
+    <Link to="/" className={`logo ${inverse ? "inverse" : ""}`} aria-label="Forge AI home">
+      <LogoMark inverse={inverse} />
       <span className="logo-word">FORGE<span className="logo-ai">AI</span></span>
     </Link>
   );
