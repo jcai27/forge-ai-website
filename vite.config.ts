@@ -1,6 +1,6 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { ROUTES } from "./src/routes";
 
@@ -33,8 +33,24 @@ function perRouteIndex(): Plugin {
   };
 }
 
-export default defineConfig({
+// Without an endpoint or a real inbox, every lead goes through mailto to the placeholder address.
+function warnOnPlaceholderContact(env: Record<string, string>): Plugin {
+  return {
+    name: "warn-placeholder-contact",
+    apply: "build",
+    buildStart() {
+      if (!env.VITE_CONTACT_ENDPOINT && !env.VITE_CONTACT_EMAIL) {
+        this.warn(
+          "Neither VITE_CONTACT_ENDPOINT nor VITE_CONTACT_EMAIL is set: every lead will go through mailto to the " +
+            "placeholder address hello@forgeai.com. Set one of them before launch (see .env.example).",
+        );
+      }
+    },
+  };
+}
+
+export default defineConfig(({ mode }) => ({
   // Served from a sub-path on GitHub Pages (e.g. /forge-ai-website/); "/" everywhere else.
   base: process.env.BASE_PATH || "/",
-  plugins: [react(), perRouteIndex()],
-});
+  plugins: [react(), perRouteIndex(), warnOnPlaceholderContact(loadEnv(mode, process.cwd(), "VITE_"))],
+}));

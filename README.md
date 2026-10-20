@@ -46,14 +46,14 @@ primary source of design values. Styles are layered: `tokens` → `base` (type, 
 ## Contact form
 
 - If `VITE_CONTACT_ENDPOINT` is set, the form POSTs JSON to it (works with Formspree, Basin, or your own API).
-- If it is not set, submitting opens the visitor's email client with the message pre-filled, addressed to `site.email`.
+- If it is not set, submitting opens the visitor's email client with the message pre-filled, addressed to `site.email`, which is read from `VITE_CONTACT_EMAIL` (falling back to the placeholder `hello@forgeai.com`). A production build warns if neither `VITE_CONTACT_ENDPOINT` nor `VITE_CONTACT_EMAIL` is set.
 - If `VITE_BOOKING_URL` is set (e.g. Calendly or Cal.com), every "Book a Consultation" button links to it. Otherwise those buttons go to `/contact?intent=consultation`.
 
 ## Deploy
 
 **GitHub Pages (current):** every push to `main` builds and deploys via `.github/workflows/deploy.yml`.
 The workflow sets `BASE_PATH` to `/<repo-name>/` and copies `index.html` to `404.html` so deep links work.
-To configure the contact form or booking link there, add `VITE_CONTACT_ENDPOINT` / `VITE_BOOKING_URL`
+To configure the contact form or booking link there, add `VITE_CONTACT_ENDPOINT` / `VITE_CONTACT_EMAIL` / `VITE_BOOKING_URL`
 as repository **variables** (Settings → Secrets and variables → Actions → Variables).
 
 This is a static single-page app, so `dist/` also deploys to any other static host. SPA fallbacks are included for
@@ -61,6 +61,6 @@ Netlify (`public/_redirects`) and Vercel (`vercel.json`).
 
 ## Before launch
 
-- Replace the placeholder email in `src/config/site.ts`.
+- Set `VITE_CONTACT_EMAIL` (or replace the placeholder email in `src/config/site.ts`).
 - Set `VITE_CONTACT_ENDPOINT` and, if you want, `VITE_BOOKING_URL`.
 - Have the privacy notice (`src/pages/Privacy.tsx`) reviewed.
