@@ -7,8 +7,8 @@ export const site = {
   url: "https://jcai27.github.io/forge-ai-website",
   tagline: "Less busywork. More business.",
   positioning: "AI-powered operational infrastructure for modern businesses.",
-  // TODO: replace with the real inbox before launch.
-  email: "hello@forgeai.com",
+  // Placeholder fallback: set VITE_CONTACT_EMAIL to the real inbox before launch.
+  email: (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) || "hello@forgeai.com",
   bookingUrl: (import.meta.env.VITE_BOOKING_URL as string | undefined) || "",
   contactEndpoint: (import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined) || "",
 };
