@@ -6,21 +6,9 @@ import Reveal from "../components/Reveal";
 import { site } from "../config/site";
 import { solutions } from "../data/solutions";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { buildMailtoHref, submitContact, validate, type FormData } from "../lib/contact";
 
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
-type RequestType = "consultation" | "workflow";
-
-interface FormData {
-  name: string;
-  email: string;
-  company: string;
-  industry: string;
-  teamSize: string;
-  interest: string;
-  requestType: RequestType;
-  message: string;
-  website: string; // honeypot
-}
 
 const industries = ["Technology / startup", "Restaurant or hospitality", "Food distribution", "Professional or field services", "Retail or e-commerce", "Healthcare or wellness", "Other"];
 const teamSizes = ["1–10", "11–50", "51–200", "201–1,000", "1,000+"];
@@ -54,19 +42,12 @@ export default function Contact() {
     if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
-  const validate = () => {
-    const e: typeof errors = {};
-    if (!data.name.trim()) e.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Please enter a valid email address.";
-    if (data.message.trim().length < 10) e.message = "Tell us a little about the workflow — a sentence or two is enough.";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
   const onSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
     if (data.website) return; // bot
-    if (!validate()) {
+    const found = validate(data);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
       window.setTimeout(() => document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus(), 0);
       return;
     }
@@ -75,27 +56,13 @@ export default function Contact() {
 
     if (site.contactEndpoint) {
       setStatus("sending");
-      try {
-        const res = await fetch(site.contactEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload),
-        });
-        setStatus(res.ok ? "sent" : "error");
-      } catch {
-        setStatus("error");
-      }
+      const res = await submitContact(site.contactEndpoint, payload);
+      setStatus(res.ok ? "sent" : "error");
       return;
     }
 
     // No endpoint configured: hand off to the visitor's email client.
-    const subject = `${data.requestType === "consultation" ? "Consultation request" : "Workflow inquiry"} — ${data.company || data.name}`;
-    const details: [string, string][] = [
-      ["Name", data.name], ["Email", data.email], ["Company", data.company],
-      ["Industry", data.industry], ["Team size", data.teamSize], ["Interested in", data.interest],
-    ];
-    const body = details.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${data.message}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = buildMailtoHref(data, site.email);
     setStatus("mailto");
   };
 
