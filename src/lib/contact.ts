@@ -1,3 +1,5 @@
+import { formatSource, type Attribution } from "./attribution";
+
 export type RequestType = "consultation" | "workflow";
 
 export interface FormData {
@@ -24,19 +26,21 @@ export function validate(data: FormData): FormErrors {
   return e;
 }
 
-export function buildMailtoHref(data: FormData, email: string): string {
+export function buildMailtoHref(data: FormData, email: string, attribution?: Attribution | null): string {
   const subject = `${data.requestType === "consultation" ? "Consultation request" : "Workflow inquiry"} — ${data.company || data.name}`;
   const details: [string, string][] = [
     ["Name", data.name], ["Email", data.email], ["Company", data.company],
     ["Industry", data.industry], ["Team size", data.teamSize], ["Interested in", data.interest],
   ];
+  const source = formatSource(attribution);
+  if (source) details.push(["Source", source]);
   const body = details.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${data.message}`;
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 export async function submitContact(
   endpoint: string,
-  payload: Omit<FormData, "website">,
+  payload: Omit<FormData, "website"> & Attribution,
   { timeoutMs = SUBMIT_TIMEOUT_MS }: { timeoutMs?: number } = {},
 ): Promise<{ ok: boolean }> {
   // Never forward the honeypot field, even if a caller passes it along.
