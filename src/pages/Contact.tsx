@@ -6,6 +6,7 @@ import Reveal from "../components/Reveal";
 import { site } from "../config/site";
 import { solutions } from "../data/solutions";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { getStoredAttribution } from "../lib/attribution";
 import { buildMailtoHref, submitContact, validate, type FormData } from "../lib/contact";
 
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
@@ -51,18 +52,19 @@ export default function Contact() {
       window.setTimeout(() => document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus(), 0);
       return;
     }
-    const { website: _hp, ...payload } = data;
+    const { website: _hp, ...fields } = data;
     void _hp;
+    const attribution = getStoredAttribution();
 
     if (site.contactEndpoint) {
       setStatus("sending");
-      const res = await submitContact(site.contactEndpoint, payload);
+      const res = await submitContact(site.contactEndpoint, { ...fields, ...attribution });
       setStatus(res.ok ? "sent" : "error");
       return;
     }
 
     // No endpoint configured: hand off to the visitor's email client.
-    window.location.href = buildMailtoHref(data, site.email);
+    window.location.href = buildMailtoHref(data, site.email, attribution);
     setStatus("mailto");
   };
 
